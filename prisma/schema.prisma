@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model role {
+  id   String @id @default(uuid())
+  name String
+
+  user             user[]
+  role_access_path role_access_path[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+}
+
+model user {
+  id         String  @id @default(uuid())
+  email      String  @unique
+  password   String?
+  name       String
+  role       role?   @relation(fields: [role_id], references: [id])
+  role_id    String?
+  is_active  Int     @default(1)
+  login_type String
+
+  log        log[]
+  user_class user_class[]
+  donation   donation[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+}
+
+model role_access_path {
+  id            String  @id @default(uuid())
+  path          String
+  title         String?
+  flaticon_code String?
+
+  role    role?   @relation(fields: [role_id], references: [id])
+  role_id String?
+}
+
+model log_type {
+  id   String @id @default(uuid())
+  name String
+
+  log log[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+}
+
+model log {
+  id          String @id @default(uuid())
+  description String
+
+  log_type    log_type? @relation(fields: [log_type_id], references: [id])
+  log_type_id String?
+  user        user?     @relation(fields: [user_id], references: [id])
+  user_id     String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+}
+
+//donation
+model donation {
+  id      String @id @default(uuid())
+  message String
+
+  user    user?   @relation(fields: [user_id], references: [id])
+  user_id String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+}
+
+//class
+model class_type {
+  id   String @id @default(uuid())
+  name String
+
+  classs classs[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+}
+
+model classs {
+  id            String      @id @default(uuid())
+  name          String
+  description   String
+  class_type    class_type? @relation(fields: [class_type_id], references: [id])
+  class_type_id String?
+  // is_active     Int         @default(1)
+
+  user_class     user_class[]
+  class_exercise class_exercise[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+}
+
+model user_class {
+  id        String  @id @default(uuid())
+  user      user?   @relation(fields: [user_id], references: [id])
+  user_id   String?
+  classs    classs? @relation(fields: [classs_id], references: [id])
+  classs_id String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+}
+
+model class_exercise {
+  id        String  @id @default(uuid())
+  classs    classs? @relation(fields: [classs_id], references: [id])
+  classs_id String?
+
+  exercise_description String
+  result               String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+}
