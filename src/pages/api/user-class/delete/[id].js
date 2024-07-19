@@ -10,23 +10,23 @@ export default async function handler(req, res) {
   }
   const compareSession = await prisma.user.findFirst({
     where: {
-      email: headers.email
-    }
-  })
+      email: headers.email,
+    },
+  });
   if (!compareSession) {
     return res.status(405).json({ message: "Unauthorized" });
   }
 
-  if (req.method !== "GET") {
+  if (req.method !== "DELETE") {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
   try {
     const { id } = req.query;
-    const data = await prisma.classs.findUnique({ where: { id: id } });
+    const data = await prisma.class_type.delete({ where: { id } });
 
-    res.status(201).json(customResponse({ data: data, type: "find" }));
+    res.status(201).json(customResponse({ data: data, type: "delete" }));
   } catch (error) {
-    console.log("(SERVER API) Error Find By Id Class", error);
+    console.log("(SERVER API) Error Delete Class Type", error);
   }
 }

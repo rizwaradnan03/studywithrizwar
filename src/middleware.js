@@ -11,7 +11,6 @@ export default withAuth(mainMiddleware);
 export const config = {
   matcher: [
     '/dashboard',
-    '/class/classlist',
-    '/class/detail/:path*'
+    '/class/:path*',
   ]
 };

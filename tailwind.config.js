@@ -20,6 +20,11 @@ const config = {
     },
     extend: {
       colors: {
+        'custom-primary': "#6D28D9",
+        'custom-secondary': "#A78BFA",
+        'custom-accent': "#C4B5FD",
+        'custom-background': "#F3F4F6",
+        'custom-text': "#111827",
         current: "currentColor",
         transparent: "transparent",
         white: "#FFFFFF",

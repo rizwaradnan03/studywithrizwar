@@ -5,6 +5,7 @@ import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { COMPANY_NAME } from "@/config";
 
 const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
   const { data } = useSession();
@@ -12,7 +13,7 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 flex w-full bg-white drop-shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+    <header className="sticky top-0 z-50 flex w-full bg-custom-background drop-shadow-lg dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex w-full items-center justify-between px-4 py-4 shadow-md md:px-6 2xl:px-11">
         <div className="flex items-center gap-4">
           {/* <!-- Hamburger Toggle BTN --> */}
@@ -59,26 +60,26 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
           </button>
           {/* <!-- Hamburger Toggle BTN --> */}
           <Link className="block flex-shrink-0" href="/dashboard">
-            <span className="text-xl font-bold text-black dark:text-white">
-              Study With Rizwar
+            <span className="text-xl font-bold text-custom-text dark:text-white">
+              {COMPANY_NAME}
             </span>
           </Link>
         </div>
 
         <div className="hidden sm:flex items-center gap-8 justify-center w-full">
-          <Link href="/class/classlist" className="text-black dark:text-white">
+          <Link href="/class/classlist" className="text-custom-text dark:text-white">
             Kelas Saya
           </Link>
-          <Link href="/dashboard" className="text-black dark:text-white">
+          <Link href="/dashboard" className="text-custom-text dark:text-white">
             Dashboard
           </Link>
-          <Link href="/dashboard" className="text-black dark:text-white">
+          <Link href="/dashboard" className="text-custom-text dark:text-white">
             Ambil Kelas
           </Link>
           {/* <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="text-black dark:text-white"
+              className="text-custom-text dark:text-white"
             >
               More
             </button>
@@ -86,13 +87,13 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
               <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md dark:bg-boxdark">
                 <Link
                   href="/services"
-                  className="block px-4 py-2 text-black hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
+                  className="block px-4 py-2 text-custom-text hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
                 >
                   Services
                 </Link>
                 <Link
                   href="/contact"
-                  className="block px-4 py-2 text-black hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
+                  className="block px-4 py-2 text-custom-text hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
                 >
                   Contact
                 </Link>
@@ -104,11 +105,11 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
         <div className="flex items-center gap-3 2xsm:gap-7">
           <ul className="flex items-center gap-2 2xsm:gap-4">
             {/* <!-- Dark Mode Toggler --> */}
-            <DarkModeSwitcher />
+            {/* <DarkModeSwitcher /> */}
             {/* <!-- Dark Mode Toggler --> */}
 
             {/* <!-- Notification Menu Area --> */}
-            <DropdownNotification />
+            {/* <DropdownNotification /> */}
             {/* <!-- Notification Menu Area --> */}
 
             {/* <!-- Chat Notification Area --> */}
@@ -125,20 +126,20 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
         <div className="w-full bg-white dark:bg-boxdark lg:hidden">
           <Link
             href="/dashboard"
-            className="block px-4 py-2 text-black dark:text-white"
+            className="block px-4 py-2 text-custom-text dark:text-white"
           >
             Dashboard
           </Link>
           <Link
             href="/about"
-            className="block px-4 py-2 text-black dark:text-white"
+            className="block px-4 py-2 text-custom-text dark:text-white"
           >
             About
           </Link>
           <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="block px-4 py-2 text-black dark:text-white w-full text-left"
+              className="block px-4 py-2 text-custom-text dark:text-white w-full text-left"
             >
               More
             </button>
@@ -146,13 +147,13 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
               <div className="px-4 py-2">
                 <Link
                   href="/services"
-                  className="block py-2 text-black hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
+                  className="block py-2 text-custom-text hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
                 >
                   Services
                 </Link>
                 <Link
                   href="/contact"
-                  className="block py-2 text-black hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
+                  className="block py-2 text-custom-text hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
                 >
                   Contact
                 </Link>

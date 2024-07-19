@@ -1,7 +1,7 @@
 import { prisma } from "@/config";
 import { customResponse } from "@/lib/customResponse";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]";
 
 export default async function handler(req, res) {
   const headers = await getServerSession(req, res, authOptions);
@@ -17,16 +17,23 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Unauthorized" });
   }
 
-  if (req.method !== "GET") {
+  if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
   try {
-    const { id } = req.query;
-    const data = await prisma.classs.findUnique({ where: { id: id } });
+    const {
+      name,
+    } = req.body;
 
-    res.status(201).json(customResponse({ data: data, type: "find" }));
+    const data = await prisma.class_type.create({
+      data: {
+        name: name,
+      },
+    });
+
+    res.status(201).json(customResponse({ data: data, type: "create" }));
   } catch (error) {
-    console.log("(SERVER API) Error Find By Id Class", error);
+    console.log("(SERVER API) Error Create Class Type", error);
   }
 }

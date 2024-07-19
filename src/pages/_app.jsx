@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import "@/styles/style.css";
 import "@/styles/satoshi.css";
-// import "@/styles/index.css"
 import { SessionProvider } from "next-auth/react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { exceptionRoutes } from "@/routes/exceptionRoutes";

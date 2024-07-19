@@ -23,10 +23,10 @@ export default async function handler(req, res) {
 
   try {
     const { id } = req.query;
-    const data = await prisma.classs.findUnique({ where: { id: id } });
+    const data = await prisma.class_type.findUnique({ where: { id } });
 
     res.status(201).json(customResponse({ data: data, type: "find" }));
   } catch (error) {
-    console.log("(SERVER API) Error Find By Id Class", error);
+    console.log("(SERVER API) Error Find By Id Class Type", error);
   }
 }

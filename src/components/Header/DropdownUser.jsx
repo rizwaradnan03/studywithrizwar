@@ -43,9 +43,9 @@ const DropdownUser = ({username, role}) => {
         className="flex items-center gap-4"
         href="#"
       >
-        <span className="hidden text-right lg:block">
+        <span className="hidden text-left lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {username}
+           Hai, {username} !
           </span>
           <span className="block text-xs">{role}</span>
         </span>

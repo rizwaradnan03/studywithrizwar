@@ -4,6 +4,7 @@ import { FindAllClassType } from "@/api/class-type/FindAllClassType";
 import { FindAllClassByType } from "@/api/class/FindAllClassByType";
 import { FindAllTakenClass } from "@/api/class/FindAllTakenClass";
 import Image from "next/image";
+import Link from "next/link";
 
 const MyClass = () => {
   const [takenClass, setTakenClass] = useState([]);
@@ -36,7 +37,7 @@ const MyClass = () => {
 
   const fetchClass = async () => {
     try {
-      if (selectedClassType == "") {
+      if (selectedClassType === "") {
         const data = await FindAllClass();
         setClasss(data.data);
       } else {
@@ -100,23 +101,23 @@ const MyClass = () => {
                 {takenClass.map((item, index) => (
                   <div
                     key={index}
-                    class="flex-none w-64 bg-white shadow dark:bg-gray-800 dark:border-gray-700"
+                    className="flex-none w-64 bg-white shadow dark:bg-gray-800 dark:border-gray-700"
                   >
-                    <div class="flex flex-col items-center pb-10">
+                    <div className="flex flex-col items-center pb-10">
                       <Image
                         width={120}
                         height={120}
-                        class="mb-3 rounded-full shadow-lg"
+                        className="mb-3 rounded-full shadow-lg"
                         src={item.classs.image_logo}
                         alt={item.classs.name}
                       />
-                      <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                      <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
                         {item.classs.name}
                       </h5>
-                      <div class="flex mt-4 md:mt-6">
+                      <div className="flex mt-4 md:mt-6">
                         <button
                           type="button"
-                          class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                           Belajar
                         </button>
@@ -143,60 +144,47 @@ const MyClass = () => {
             </h2>
           </div>
           <div className="px-6.5 py-4 dark:border-strokedark">
-            <div className="relative">
-              <button
-                onClick={scrollLeft}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-800 text-white px-2 py-1 rounded-full"
-              >
-                &lt;
-              </button>
-              <div
-                ref={scrollRef}
-                className="flex overflow-x-auto space-x-4 scrollbar-hide"
-                style={{ scrollBehavior: "smooth" }}
-              >
+            <div className="overflow-y-auto h-96">
+              {" "}
+              {/* Set a fixed height with scrolling */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-6.5">
                 {classs.map((item, index) => (
                   <div
                     key={index}
-                    class="flex-none w-64 bg-white shadow dark:bg-gray-800 dark:border-gray-700"
+                    className="flex flex-col items-center bg-white shadow dark:bg-gray-800 dark:border-gray-700 p-4 rounded-lg"
                   >
-                    <div class="flex flex-col items-center pb-10">
-                      <Image
-                        width={120}
-                        height={120}
-                        class="mb-3 rounded-full shadow-lg"
-                        src={item.image_logo}
-                        alt={item.name}
-                      />
-                      <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-                        {item.name}
-                      </h5>
-                      <div class="flex mt-4 md:mt-6">
-                        <button
-                          type="button"
-                          class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        >
-                          Detail Kelas
-                        </button>
-                      </div>
+                    <Image
+                      width={120}
+                      height={120}
+                      className="mb-3 rounded-full shadow-lg"
+                      src={item.image_logo}
+                      alt={item.name}
+                    />
+                    <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                      {item.name}
+                    </h5>
+                    <div className="flex mt-4">
+                      <Link
+                        href={`/class/detail/${item.id}`}
+                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-custom-accent bg-custom-primary rounded-lg hover:bg-custom-secondary focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      >
+                        Detail Kelas
+                      </Link>
                     </div>
                   </div>
                 ))}
               </div>
-              <button
-                onClick={scrollRight}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-800 text-white px-2 py-1 rounded-full"
-              >
-                &gt;
-              </button>
             </div>
           </div>
         </div>
+
         <div className="w-full lg:w-1/4 lg:mr-4 rounded-sm border border-stroke bg-white shadow-md dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h2 className="font-bold text-black dark:text-white">Filter</h2>
           </div>
-          <div className="px-6.5 py-4 dark:border-strokedark">
+          <div className="px-6.5 py-4 dark:border-strokedark max-h-screen overflow-y-auto">
+            {" "}
+            {/* Fixed height with scrolling */}
             <div className="flex items-center mb-2">
               <input
                 type="radio"
@@ -214,7 +202,6 @@ const MyClass = () => {
                 Semua
               </label>
             </div>
-
             {classType.map((item) => (
               <div key={item.id} className="flex items-center mb-2">
                 <input

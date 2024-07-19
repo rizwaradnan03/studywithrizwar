@@ -102,7 +102,7 @@ model classs {
   id                   String      @id @default(uuid())
   image_logo           String?
   name                 String
-  description          String
+  description          String @db.LongText
   programming_language String?
   class_type           class_type? @relation(fields: [class_type_id], references: [id])
   class_type_id        String?
@@ -131,7 +131,7 @@ model class_exercise {
   classs    classs? @relation(fields: [classs_id], references: [id])
   classs_id String?
 
-  exercise_description String
+  exercise_description String @db.LongText
   result               String
 
   created_at DateTime @default(now())

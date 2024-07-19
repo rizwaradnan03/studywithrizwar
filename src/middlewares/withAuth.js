@@ -17,10 +17,33 @@ export default function withAuth(middleware) {
     }
 
     const userRolePaths = token.role_access_paths;
-    const hasAccess = userRolePaths.some((route) => route.path === pathName);
+
+    // Helper function to check if the path matches any pattern
+    const hasAccess = userRolePaths.some((route) => {
+      const routePath = route.path;
+      
+      // Handle dynamic segments with regex
+      if (routePath.includes(":")) {
+        // Convert route pattern to regex
+        const regexPath = new RegExp(
+          "^" + routePath
+            .replace(/:[\w]+/g, "[^/]+")   // Replace :param with [^/]+
+            .replace(/\*/g, ".*")           // Replace * with .*
+            + "$"
+        );
+
+        return regexPath.test(pathName);
+      }
+
+      // Exact path match
+      return routePath === pathName;
+    });
+
     if (!hasAccess) {
+      console.log('gapunya akses', userRolePaths);
       return NextResponse.redirect(new URL("/dashboard", req.url));
     }
+
     return middleware(req, next);
   };
 }
