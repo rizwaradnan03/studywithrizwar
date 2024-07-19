@@ -1,6 +1,4 @@
-// import { findCompany } from "@/api/CompanyApi";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
+import GoogleAuthButton from "@/components/oauth/GoogleAuthButton";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,22 +12,9 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { push } = useRouter();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   const fetchCompany = async () => {
-  //     try {
-  //       const result = await findCompany();
-  //       setCompanyName(result.data.name);
-  //     } catch (error) {
-  //       console.log("(CLIENT) Error Fetching Company", error);
-  //     }
-  //   };
-
-  //   fetchCompany();
-  // }, []);
-
-  const callbackUrl = "/dashboard";
+  const callbackUrl = router.query.callbackUrl || "/dashboard";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -48,7 +33,7 @@ const Login = () => {
       if (!result?.error) {
         toast.success("Berhasil Login!");
         setTimeout(() => {
-          push(callbackUrl);
+          router.push(callbackUrl);
         }, 2000);
       } else {
         throw new Error(result.error);
@@ -80,7 +65,7 @@ const Login = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Masukkan Email"
+                      placeholder="Enter Email"
                       required
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -94,7 +79,7 @@ const Login = () => {
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Masukkan Password"
+                      placeholder="Enter Password"
                       required
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -105,7 +90,7 @@ const Login = () => {
                       href="/email/forgot-password"
                       className="text-sm text-primary hover:underline"
                     >
-                      Lupa Password
+                      Forgot Password?
                     </Link>
                   </div>
 
@@ -113,20 +98,7 @@ const Login = () => {
                     Sign In
                   </button>
                   <hr />
-                  <a
-                    className="px-7 py-2 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center mb-3"
-                    style={{ backgroundColor: "#ffffff", color: "gray" }}
-                    onClick={() => signIn("google", { callbackUrl })}
-                    role="button"
-                  >
-                    <img
-                      className="pr-2"
-                      src="/images/google.svg"
-                      alt=""
-                      style={{ height: "2rem" }}
-                    />
-                    Continue with Google
-                  </a>
+                  <GoogleAuthButton />
                 </div>
               </form>
             </div>

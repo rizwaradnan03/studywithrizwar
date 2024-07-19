@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-const authOptions = {
+export const authOptions = {
   session: {
     strategy: "jwt",
     maxAge: 4 * 60 * 60,
@@ -63,7 +63,6 @@ const authOptions = {
   ],
   callbacks: {
     async jwt({ token, user, account, profile }) {
-      console.log({ token, user, account, profile });
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -87,6 +86,7 @@ const authOptions = {
               login_type: "Google",
               role_id: "2",
             },
+            include: {role: true}
           });
         }
 
@@ -110,11 +110,6 @@ const authOptions = {
         session.user.role_access_paths = token.role_access_paths;
       }
       return session;
-    },
-    async redirect({ url, baseUrl }) {
-      console.log('url', url)
-      console.log('base url', baseUrl)
-      return baseUrl;
     },
   },
   pages: {

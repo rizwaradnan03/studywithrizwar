@@ -1,0 +1,11 @@
+###
+POST http://localhost:3000/api/class/create
+Content-Type: application/json
+
+{
+    "name": "Html Dasar",
+    "description": "Belajar Html Dasar",
+    "class_type_id": "1",
+    "programming_language": "javascript",
+    "image_logo": "kosong"
+}

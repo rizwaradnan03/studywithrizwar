@@ -7,4 +7,4 @@ export function mainMiddleware(req) {
   return res;
 }
 
-export default withAuth(mainMiddleware, ["/admin", "/cashier/pos", "/dashboard",]);
+export default withAuth(mainMiddleware, ["/dashboard", "/class/classlist"]);

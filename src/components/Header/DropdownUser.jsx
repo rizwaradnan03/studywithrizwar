@@ -50,7 +50,7 @@ const DropdownUser = ({username, role}) => {
           <span className="block text-xs">{role}</span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
+        {/* <span className="h-12 w-12 rounded-full">
           <Image
             width={112}
             height={112}
@@ -61,7 +61,7 @@ const DropdownUser = ({username, role}) => {
             }}
             alt="User"
           />
-        </span>
+        </span> */}
 
         <svg
           className="hidden fill-current sm:block"

@@ -99,11 +99,13 @@ model class_type {
 }
 
 model classs {
-  id            String      @id @default(uuid())
-  name          String
-  description   String
-  class_type    class_type? @relation(fields: [class_type_id], references: [id])
-  class_type_id String?
+  id                   String      @id @default(uuid())
+  image_logo           String?
+  name                 String
+  description          String
+  programming_language String?
+  class_type           class_type? @relation(fields: [class_type_id], references: [id])
+  class_type_id        String?
   // is_active     Int         @default(1)
 
   user_class     user_class[]
