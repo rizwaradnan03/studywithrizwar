@@ -70,7 +70,6 @@ export const authOptions = {
         token.role_access_paths = user.role_access_paths;
       }
 
-      // Handle Google Provider
       if (account?.provider === "google") {
         let userFromDB = await prisma.user.findUnique({
           where: { email: token.email },
@@ -78,7 +77,6 @@ export const authOptions = {
         });
 
         if (!userFromDB) {
-          // Create new user if not found
           userFromDB = await prisma.user.create({
             data: {
               email: token.email,
@@ -86,7 +84,7 @@ export const authOptions = {
               login_type: "Google",
               role_id: "2",
             },
-            include: {role: true}
+            include: { role: true },
           });
         }
 
