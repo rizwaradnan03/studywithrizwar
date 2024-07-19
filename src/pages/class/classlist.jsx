@@ -33,9 +33,10 @@ const MyClass = () => {
 
   const fetchClass = async () => {
     try {
-      if (selectedClassType === "") {
+      if (selectedClassType == "") {
         const data = await FindAllClass();
         setClasss(data.data);
+        console.log("isidatadata kosong", data);
       } else {
         const data = await FindAllClassByType({
           class_type: selectedClassType,
@@ -80,6 +81,23 @@ const MyClass = () => {
           <h2 className="font-bold text-black dark:text-white">Filter</h2>
         </div>
         <div className="px-6.5 py-4 dark:border-strokedark">
+          <div className="flex items-center mb-2">
+            <input
+              type="radio"
+              id="classType-semua"
+              name="classType"
+              value=""
+              checked={selectedClassType === ""}
+              onChange={() => handleRadioChange("")}
+              className="form-radio h-4 w-4 text-primary accent-primary focus:ring-0"
+            />
+            <label
+              htmlFor="classType-semua"
+              className="ml-2 text-black dark:text-white cursor-pointer"
+            >
+              Semua
+            </label>
+          </div>
           {classType.map((item) => (
             <div key={item.id} className="flex items-center mb-2">
               <input
@@ -125,7 +143,7 @@ const MyClass = () => {
                     height={25}
                     src={item.classs.image_logo}
                     alt={item.classs.name}
-                    className="w-full object-cover rounded-lg"
+                    className="w-full h-40 object-cover rounded-lg"
                   />
                   <p>{item.classs.name}</p>
                 </div>
