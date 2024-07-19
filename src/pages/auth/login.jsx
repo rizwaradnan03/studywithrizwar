@@ -1,3 +1,4 @@
+import GithubAuthButton from "@/components/oauth/GithubAuthButton";
 import GoogleAuthButton from "@/components/oauth/GoogleAuthButton";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -97,8 +98,18 @@ const Login = () => {
                   <button className="flex mb-5 w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
                     Sign In
                   </button>
-                  <hr />
+                  <div className="relative my-4">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                      <span className="px-2 bg-white text-gray-500">
+                        Or
+                      </span>
+                    </div>
+                  </div>
                   <GoogleAuthButton />
+                  <GithubAuthButton />
                 </div>
               </form>
             </div>

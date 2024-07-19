@@ -3,8 +3,15 @@ import withAuth from "./middlewares/withAuth";
 
 export function mainMiddleware(req) {
   const res = NextResponse.next();
-
   return res;
 }
 
-export default withAuth(mainMiddleware, ["/dashboard", "/class/classlist"]);
+export default withAuth(mainMiddleware);
+
+export const config = {
+  matcher: [
+    '/dashboard',
+    '/class/classlist',
+    '/class/detail/:path*'
+  ]
+};
