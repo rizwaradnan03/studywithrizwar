@@ -5,15 +5,14 @@ import { getServerSession } from "next-auth";
 
 export default async function handler(req, res) {
   const headers = await getServerSession(req, res, authOptions);
-  console.log('isi headder', headers)
   if (!headers) {
     return res.status(405).json({ message: "Unauthorized" });
   }
   const compareSession = await prisma.user.findFirst({
     where: {
-      email: headers.email
-    }
-  })
+      email: headers.email,
+    },
+  });
   if (!compareSession) {
     return res.status(405).json({ message: "Unauthorized" });
   }
@@ -23,10 +22,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const data = await prisma.classs.findMany();
+    const { id } = req.query;
+    const data = await prisma.classs.findMany({
+      where: { class_type_id: id },
+    });
 
     res.status(201).json(customResponse({ data: data, type: "find" }));
   } catch (error) {
-    console.log("(SERVER API) Error Find All Class", error);
+    console.log("(SERVER API) Error Find All By Class Type Class", error);
   }
 }

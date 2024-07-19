@@ -9,3 +9,6 @@ Content-Type: application/json
     "programming_language": "javascript",
     "image_logo": "kosong"
 }
+
+###
+GET http://localhost:3000/api/class/find/find-all-by-class-type/1
