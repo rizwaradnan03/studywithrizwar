@@ -34,9 +34,10 @@ model user {
   is_active  Int     @default(1)
   login_type String
 
-  log        log[]
-  user_class user_class[]
-  donation   donation[]
+  log                 log[]
+  user_class          user_class[]
+  donation            donation[]
+  user_class_exercise user_class_exercise[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt()
@@ -102,7 +103,7 @@ model classs {
   id                   String      @id @default(uuid())
   image_logo           String?
   name                 String
-  description          String @db.LongText
+  description          String      @db.LongText
   programming_language String?
   class_type           class_type? @relation(fields: [class_type_id], references: [id])
   class_type_id        String?
@@ -131,8 +132,29 @@ model class_exercise {
   classs    classs? @relation(fields: [classs_id], references: [id])
   classs_id String?
 
-  exercise_description String @db.LongText
-  result               String
+  order                String?
+  term                 Json?
+  exercise_description String  @db.LongText
+  result               String  @db.LongText
+
+  user_class_exercise user_class_exercise[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+}
+
+model user_class_exercise {
+  id                   String          @id @default(uuid())
+  user                 user?           @relation(fields: [user_id], references: [id])
+  user_id              String?
+  class_exercise       class_exercise? @relation(fields: [class_exercise_id], references: [id])
+  class_exercise_id    String?
+  programming_language String
+
+  order String
+
+  result String? @db.LongText
+  status Int     @default(0)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt()
