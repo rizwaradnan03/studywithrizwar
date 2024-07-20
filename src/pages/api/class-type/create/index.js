@@ -5,14 +5,16 @@ import { authOptions } from "../../auth/[...nextauth]";
 
 export default async function handler(req, res) {
   const headers = await getServerSession(req, res, authOptions);
+  const headersMail = headers.user.email;
+
   if (!headers) {
     return res.status(405).json({ message: "Unauthorized" });
   }
   const compareSession = await prisma.user.findFirst({
     where: {
-      email: headers.email
-    }
-  })
+      email: headersMail,
+    },
+  });
   if (!compareSession) {
     return res.status(405).json({ message: "Unauthorized" });
   }
@@ -22,9 +24,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const {
-      name,
-    } = req.body;
+    const { name } = req.body;
 
     const data = await prisma.class_type.create({
       data: {

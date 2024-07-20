@@ -4,18 +4,20 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]";
 
 export default async function handler(req, res) {
-    const headers = await getServerSession(req, res, authOptions);
-    if (!headers) {
-      return res.status(405).json({ message: "Unauthorized" });
-    }
-    const compareSession = await prisma.user.findFirst({
-      where: {
-        email: headers.email
-      }
-    })
-    if (!compareSession) {
-      return res.status(405).json({ message: "Unauthorized" });
-    }
+  const headers = await getServerSession(req, res, authOptions);
+  const headersMail = headers.user.email;
+
+  if (!headers) {
+    return res.status(405).json({ message: "Unauthorized" });
+  }
+  const compareSession = await prisma.user.findFirst({
+    where: {
+      email: headersMail,
+    },
+  });
+  if (!compareSession) {
+    return res.status(405).json({ message: "Unauthorized" });
+  }
 
   if (req.method !== "PATCH") {
     return res.status(405).json({ message: "Method not allowed" });
@@ -39,7 +41,7 @@ export default async function handler(req, res) {
         programming_language: programming_language,
         image_logo: image_logo,
       },
-      where: {id}
+      where: { id },
     });
 
     res.status(201).json(customResponse({ data: data, type: "update" }));

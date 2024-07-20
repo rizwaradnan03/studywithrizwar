@@ -1,28 +1,74 @@
 import { FindClassById } from "@/api/class/FindByIdClass";
+import { FindHasTakenOrNotUserClass } from "@/api/user-class/FindHasTakenOrNotUserClass";
+import { RegisterUserClass } from "@/api/user-class/RegisterUserClass";
+import IsLoading from "@/components/lib/react-query/IsLoading";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useQuery } from "react-query";
 
 function Detail() {
   const router = useRouter();
   const id = router.query.slug;
 
-  const [classs, setClasss] = useState([]);
+  const {
+    isLoading: isLoadingClass,
+    error: errorClass,
+    data: dataClass,
+  } = useQuery(["class", id], () => FindClassById({ id: id }), {
+    enabled: !!id,
+  });
 
-  const fetchClassById = async () => {
+  const class_id = dataClass?.data.id;
+
+  if (dataClass?.data.length == 0) {
+    toast.error("Kelas Tidak Ditemukan!");
+    router.push("/class/classlist");
+  }
+
+  const {
+    isLoading: isLoadingTakenClass,
+    error: errorTakenClass,
+    data: dataTakenClass,
+    refetch: refetchDataTakenClass,
+  } = useQuery(
+    ["takenClass", id],
+    () => FindHasTakenOrNotUserClass({ id: id }),
+    { enabled: !!id }
+  );
+
+  console.log('isi taken class', dataTakenClass?.data)
+
+  const handleRegisterClass = async () => {
     try {
-      const data = await FindClassById({ id: id });
-      setClasss(data.data);
+      const register = await RegisterUserClass({ class_id: class_id });
+
+      if (!register) {
+        toast.error("Gagal Mengklaim Kelas Ini!");
+      } else {
+        toast.success("Berhasil Mengklaim Kelas Ini!");
+
+        setTimeout(() => {
+          refetchDataTakenClass();
+        }, 1000);
+      }
     } catch (error) {
-      console.log("(CLIENT) Error Fetch Class By Id", error);
+      console.log("(CLIENT) Error Register Class", error);
     }
   };
 
-  console.log("isi class", classs);
+  if (isLoadingClass || isLoadingTakenClass) {
+    return <IsLoading />;
+  }
 
-  useEffect(() => {
-    fetchClassById();
-  }, []);
+  if (errorClass) {
+    return toast.error("Gagal Mengambil Data Kelas!");
+  }
+
+  if (errorTakenClass) {
+    return toast.error("Gagal Memverifikasi Kepemilikan Kelas Ini!");
+  }
 
   return (
     <>
@@ -30,16 +76,24 @@ function Detail() {
         <div className="flex flex-col lg:flex-row mb-10">
           <div className="w-full lg:w-1/4">
             <Image
-              src={classs.image_logo}
-              width={200}
-              height={200}
-              alt={classs.name}
+              src={dataClass?.data.image_logo}
+              width={300}
+              height={300}
+              alt={dataClass?.data.name}
             />
           </div>
           <div className="w-full lg:w-3/4">
-            <h2 className="font-bold text-2xl">Kelas {classs.name}</h2>
-            <p>{classs.description}</p>
-            {/* <button></button> */}
+            <h2 className="font-bold text-2xl mb-2">
+              Kelas {dataClass?.data.name}
+            </h2>
+            <p className="mb-4">{dataClass?.data.description}</p>
+            {dataTakenClass?.data.length == 0 ? (
+              <button onClick={() => handleRegisterClass()}>
+                Ambil kelas Sekarang!
+              </button>
+            ) : (
+              <button>Mulai kelas</button>
+            )}
           </div>
         </div>
       </div>

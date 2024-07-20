@@ -11,4 +11,4 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/class/find/find-by-id/1
+GET http://localhost:3000/api/class-type/find/find-all/

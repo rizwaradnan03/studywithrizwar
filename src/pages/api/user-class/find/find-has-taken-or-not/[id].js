@@ -24,21 +24,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    const findUser = await prisma.user.findFirst({
-      where: { email: headers.user.email },
+    const { id } = req.query;
+    const data = await prisma.user_class.findFirst({
+      where: {
+        user_id: compareSession.id,
+        classs_id: id,
+      },
     });
 
-    if (!findUser) {
-      return res.status(405).json({ message: "User Not Found" });
+    if (!data) {
+      res.status(201).json(customResponse({ data: null, type: "find" }));
     }
 
-    const userClass = await prisma.user_class.findMany({
-      include: { classs: true },
-      where: { user_id: findUser.id },
-    });
-
-    res.status(201).json(customResponse({ data: userClass, type: "find" }));
+    res.status(201).json(customResponse({ data: data, type: "find" }));
   } catch (error) {
-    console.log("(SERVER API) Error Find All Class", error);
+    console.log("(SERVER API) Error Find Has Taken Or Not User Class", error);
   }
 }

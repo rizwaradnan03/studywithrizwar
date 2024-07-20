@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, ReactNode } from "react";
-import SideBar from "@/components/Sidebar/SideBar";
-import NavBar from "@/components/Header/NavBar";
+import SideBar from "@/components/web/Sidebar/SideBar";
+import NavBar from "@/components/web/Header/NavBar";
 import Footer from "../footer/Footer";
 
 export default function DefaultLayout({ children }) {

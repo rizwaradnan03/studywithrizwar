@@ -1,5 +1,5 @@
-import GithubAuthButton from "@/components/oauth/GithubAuthButton";
-import GoogleAuthButton from "@/components/oauth/GoogleAuthButton";
+import GithubAuthButton from "@/components/lib/oauth/GithubAuthButton";
+import GoogleAuthButton from "@/components/lib/oauth/GoogleAuthButton";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";

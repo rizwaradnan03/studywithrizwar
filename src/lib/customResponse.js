@@ -1,7 +1,7 @@
 // lib/customResponse.js
 export const customResponse = ({ data, type }) => {
     let responseTemplate;
-    if (data.length > 0 || data) {
+    if (data) {
       if (type === "create") {
         responseTemplate = {
           code: 201,

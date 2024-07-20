@@ -5,60 +5,41 @@ import { FindAllClassByType } from "@/api/class/FindAllClassByType";
 import { FindAllTakenClass } from "@/api/class/FindAllTakenClass";
 import Image from "next/image";
 import Link from "next/link";
+import { useQuery } from "react-query";
+import IsLoading from "@/components/lib/react-query/IsLoading";
+import toast from "react-hot-toast";
 
 const MyClass = () => {
-  const [takenClass, setTakenClass] = useState([]);
-  const amountOfTakenClass = takenClass.length;
-
-  const [classs, setClasss] = useState([]);
-  const amountOfClass = classs.length;
-
-  const [classType, setClassType] = useState([]);
   const [selectedClassType, setSelectedClassType] = useState("");
   const scrollRef = useRef(null);
 
-  const fetchTakenClass = async () => {
-    try {
-      const data = await FindAllTakenClass();
-      setTakenClass(data.data);
-    } catch (error) {
-      console.log("(CLIENT) Error Fetch Taken Class", error);
-    }
-  };
+  const {
+    isLoading: isLoadingTakenClass,
+    error: errorTakenClass,
+    data: dataTakenClass,
+  } = useQuery("takenClass", FindAllTakenClass);
 
-  const fetchClassType = async () => {
-    try {
-      const data = await FindAllClassType();
-      setClassType(data.data);
-    } catch (error) {
-      console.log("(CLIENT) Error Fetch Class Type", error);
-    }
-  };
+  const {
+    isLoading: isLoadingClassType,
+    error: errorClassType,
+    data: dataClassType,
+  } = useQuery("classType", FindAllClassType);
 
-  const fetchClass = async () => {
-    try {
-      if (selectedClassType === "") {
-        const data = await FindAllClass();
-        setClasss(data.data);
-      } else {
-        const data = await FindAllClassByType({
-          class_type: selectedClassType,
-        });
-        setClasss(data.data);
-      }
-    } catch (error) {
-      console.log("(CLIENT) Error Fetch Class", error);
-    }
-  };
+  const {
+    isLoading: isLoadingClass,
+    error: errorClass,
+    data: dataClass,
+  } = useQuery(
+    ["class", selectedClassType],
+    () =>
+      selectedClassType
+        ? FindAllClassByType({ class_type: selectedClassType })
+        : FindAllClass(),
+    { enabled: !!selectedClassType || selectedClassType == "" }
+  );
 
-  useEffect(() => {
-    fetchTakenClass();
-    fetchClassType();
-  }, []);
-
-  useEffect(() => {
-    fetchClass();
-  }, [selectedClassType]);
+  const amountOfTakenClass = dataTakenClass?.data.length || 0;
+  const amountOfClass = dataClass?.data.length;
 
   const handleRadioChange = (id) => {
     setSelectedClassType(id);
@@ -75,6 +56,22 @@ const MyClass = () => {
       scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
     }
   };
+
+  if (isLoadingClass || isLoadingClassType || isLoadingTakenClass) {
+    return <IsLoading />;
+  }
+
+  if (errorClass) {
+    toast.error("Gagal Mengambil Data Kelas!");
+  }
+
+  if (errorClassType) {
+    toast.error("Gagal Mengambil Data Tipe Kelas!");
+  }
+
+  if (errorTakenClass) {
+    toast.error("Gagal Mengambil Data Kelas Yang Telah Diambil!");
+  }
 
   return (
     <>
@@ -98,7 +95,7 @@ const MyClass = () => {
                 className="flex overflow-x-auto space-x-4 scrollbar-hide"
                 style={{ scrollBehavior: "smooth" }}
               >
-                {takenClass.map((item, index) => (
+                {dataTakenClass?.data.map((item, index) => (
                   <div
                     key={index}
                     className="flex-none w-64 bg-white shadow dark:bg-gray-800 dark:border-gray-700"
@@ -148,7 +145,7 @@ const MyClass = () => {
               {" "}
               {/* Set a fixed height with scrolling */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-6.5">
-                {classs.map((item, index) => (
+                {dataClass?.data.map((item, index) => (
                   <div
                     key={index}
                     className="flex flex-col items-center bg-white shadow dark:bg-gray-800 dark:border-gray-700 p-4 rounded-lg"
@@ -202,7 +199,7 @@ const MyClass = () => {
                 Semua
               </label>
             </div>
-            {classType.map((item) => (
+            {dataClassType?.data.map((item) => (
               <div key={item.id} className="flex items-center mb-2">
                 <input
                   type="radio"
