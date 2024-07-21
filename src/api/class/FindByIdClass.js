@@ -6,5 +6,6 @@ export const FindClassById = async ({id}) => {
       return data.data
     } catch (error) {
         console.log('(CLIENT API) Error Find Class By Id', error)
+        throw new error('(SERVER API) Error')
     }
 }

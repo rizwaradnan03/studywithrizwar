@@ -7,5 +7,6 @@ export const FindAllUserClass = async () => {
       return data.data
     } catch (error) {
         console.log('(CLIENT API) Error Find All User Class', error)
+        throw new error('(SERVER API) Error')
     }
 }

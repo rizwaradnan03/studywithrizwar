@@ -10,9 +10,14 @@ import toast from "react-hot-toast";
 import { useQuery, useQueryClient } from "react-query";
 
 function Detail() {
+  const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
   const id = router.query.slug;
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const {
     isLoading: isLoadingClass,
@@ -22,12 +27,16 @@ function Detail() {
     enabled: !!id,
   });
 
+  console.log('isi detail class', dataClass)
+
   const class_id = dataClass?.data.id;
 
-  if (dataClass?.data.length == 0) {
-    toast.error("Kelas Tidak Ditemukan!");
-    router.push("/class/classlist");
-  }
+  useEffect(() => {
+    if (dataClass?.data.length === 0) {
+      toast.error("Kelas Tidak Ditemukan!");
+      router.push("/class/classlist");
+    }
+  }, [dataClass, router]);
 
   const {
     isLoading: isLoadingTakenClass,
@@ -47,7 +56,6 @@ function Detail() {
         toast.error("Gagal Mengklaim Kelas Ini!");
       } else {
         toast.success("Berhasil Mengklaim Kelas Ini!");
-
         queryClient.invalidateQueries(["takenClass", id]);
       }
     } catch (error) {
@@ -60,12 +68,16 @@ function Detail() {
   }
 
   if (errorClass) {
-    return toast.error("Gagal Mengambil Data Kelas!");
+    toast.error("Gagal Mengambil Data Kelas!");
+    return null; // Ensure we return null to not break the rendering
   }
 
   if (errorTakenClass) {
-    return toast.error("Gagal Memverifikasi Kepemilikan Kelas Ini!");
+    toast.error("Gagal Memverifikasi Kepemilikan Kelas Ini!");
+    return null; // Ensure we return null to not break the rendering
   }
+
+  if (!isMounted) return null;
 
   return (
     <>
@@ -84,18 +96,18 @@ function Detail() {
               Kelas {dataClass?.data.name}
             </h2>
             <p className="mb-4">{dataClass?.data.description}</p>
-            {dataTakenClass?.data.length == 0 ? (
+            {dataTakenClass?.data.length === 0 ? (
               <button
                 type="button"
                 className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                onClick={() => handleRegisterClass()}
+                onClick={handleRegisterClass}
               >
                 Ambil kelas Sekarang!
               </button>
             ) : (
               <Link
                 href={`/class/course/${dataTakenClass?.data.id}/${dataClass?.data.programming_language}/1`}
-                class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
               >
                 Mulai kelas
               </Link>

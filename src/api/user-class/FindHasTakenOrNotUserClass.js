@@ -9,5 +9,6 @@ export const FindHasTakenOrNotUserClass = async ({ id }) => {
     return data.data;
   } catch (error) {
     console.log("(CLIENT API) Error Find Has Taken Or Not User Class", error);
+    throw new error('(SERVER API) Error')
   }
 };

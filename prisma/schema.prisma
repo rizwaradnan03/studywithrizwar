@@ -137,6 +137,8 @@ model class_exercise {
   exercise_description String  @db.LongText
   result               String  @db.LongText
 
+  templateCode String? @db.LongText
+
   user_class_exercise user_class_exercise[]
 
   created_at DateTime @default(now())

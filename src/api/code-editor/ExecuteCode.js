@@ -1,3 +1,4 @@
+import { LANGUAGE_VERSION } from "@/components/lib/monaco-text-editor/LanguageVersion";
 import { ApiExecuteCode } from "../ApiManager";
 
 export const ExecuteCode = async (language, sourceCode) => {
@@ -8,10 +9,9 @@ export const ExecuteCode = async (language, sourceCode) => {
     },
     data: {
       language: language,
-      version: "18.15.0",
+      version: LANGUAGE_VERSION[language],
       files: [
         {
-          name: "mantap.js",
           content: sourceCode,
         },
       ],

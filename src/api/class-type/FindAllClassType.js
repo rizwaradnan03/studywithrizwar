@@ -6,5 +6,6 @@ export const FindAllClassType = async () => {
     return data.data;
   } catch (error) {
     console.log("(CLIENT API) Error Find All Class Type", error);
+    throw new error('(SERVER API) Error')
   }
 };

@@ -1,9 +1,10 @@
 import { ExecuteCode } from "@/api/code-editor/ExecuteCode";
+import { Box } from "@chakra-ui/react";
 import { Button } from "flowbite-react";
 import React, { useState } from "react";
 
 const Output = ({ editorRef }) => {
-    const [output, setOutput] = useState("")
+  const [output, setOutput] = useState("");
 
   const runCode = async () => {
     const sourceCode = editorRef.current.getValue();
@@ -12,7 +13,7 @@ const Output = ({ editorRef }) => {
     try {
       const run = await ExecuteCode("javascript", sourceCode);
 
-      setOutput(run.run.output)
+      setOutput(run.run.output);
     } catch (error) {
       console.log("(CLIENT) Error Running Code", error);
     }
@@ -20,12 +21,25 @@ const Output = ({ editorRef }) => {
 
   return (
     <>
-      <Button onClick={() => runCode()} className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-5">
-        Run Code
+      <Button
+        onClick={() => runCode()}
+        className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-2.5 py-1.4 text-center me-2 mb-5"
+      >
+        Jalankan Kode
       </Button>
-      {
-        output ? output : 'Click Run To See The Output Here'
-      }
+      <Box
+        height={"60vh"}
+        p={2}
+        border={"1px solid"}
+        borderRadius={4}
+        borderColor={"#333"}
+        padding={10}
+        overflow="auto"
+        bgcolor="#f0f0f0"
+        boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
+      >
+        {output ? output : "Tekan Jalankan Kode Untuk Melihat Hasil"}
+      </Box>
     </>
   );
 };

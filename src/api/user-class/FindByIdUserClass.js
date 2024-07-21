@@ -7,5 +7,6 @@ export const FindUserClassById = async ({ id }) => {
     return data.data;
   } catch (error) {
     console.log("(CLIENT API) Error Find By Id User Class", error);
+    throw new error('(SERVER API) Error')
   }
 };

@@ -15,5 +15,6 @@ export const RegisterUserClass = async ({ class_id }) => {
     return data.data;
   } catch (error) {
     console.log("(CLIENT API) Error Register User Class", error);
+    throw new error("(SERVER API) Error");
   }
 };

@@ -76,6 +76,7 @@ export default async function handler(req, res) {
         class_exercise_id: item.id,
         order: item.order,
         programming_language: findClass.programming_language,
+        templateCode: item.templateCode,
       };
     });
 

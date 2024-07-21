@@ -9,5 +9,6 @@ export const FindAllTakenClass= async () => {
     return data.data;
   } catch (error) {
     console.log("(CLIENT API) Error Find All Taken Class", error);
+    throw new error('(SERVER API) Error')
   }
 };
