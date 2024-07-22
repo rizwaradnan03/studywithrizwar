@@ -3,7 +3,7 @@ import CodeEditor from "@/components/lib/monaco-text-editor/CodeEditor";
 import IsLoading from "@/components/lib/react-query/IsLoading";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useQuery } from "react-query";
 
@@ -12,15 +12,14 @@ const Course = () => {
   const { slug } = router.query;
   const session = useSession();
 
-  const userEmail = session ? session.data?.user.email : ""
-
-  console.log("isi session", session);
+  const userEmail = session ? session.data?.user.email : "";
 
   const userClassId = slug ? slug[0] : null;
   const programmingLanguage = slug ? slug[1] : null;
   const order = slug ? slug[2] : null;
 
-  console.log("isi order", order);
+  const [output, setOutput] = useState("");
+  const [isCodeRunning, setIsCodeRunning] = useState(false);
 
   const {
     isLoading: isLoadingComparingParamData,
@@ -47,11 +46,23 @@ const Course = () => {
       )
   );
 
-  console.log("isi comparing data", dataComparingParamData);
+  useEffect(() => {
+    if (isCodeRunning && dataComparingParamData) {
+      let modifiedOutput = output.replace("\n", "");
+      if (
+        modifiedOutput === dataComparingParamData.data.class_exercise.result
+      ) {
+        toast.success("Jawaban Anda Benar!");
+      } else {
+        toast.error("Jawaban Anda Salah!");
+      }
+      setIsCodeRunning(false);
+    }
+  }, [isCodeRunning, dataComparingParamData, output]);
 
   if (isErrorComparingParamData) {
     toast.error(errorComparingParamData.message);
-    // router.push("/class/classlist");
+    router.push("/class/classlist");
   }
 
   if (isLoadingComparingParamData) return <IsLoading />;
@@ -72,6 +83,9 @@ const Course = () => {
           programmingLanguage={
             dataComparingParamData?.data.programming_language
           }
+          output={output}
+          setOutput={setOutput}
+          setIsCodeRunning={setIsCodeRunning}
         />
       </div>
     </>

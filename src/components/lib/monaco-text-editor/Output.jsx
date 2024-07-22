@@ -3,17 +3,24 @@ import { Box } from "@chakra-ui/react";
 import { Button } from "flowbite-react";
 import React, { useState } from "react";
 
-const Output = ({ editorRef }) => {
-  const [output, setOutput] = useState("");
+const Output = ({
+  programmingLanguage,
+  editorRef,
+  output,
+  setOutput,
+  setIsCodeRunning,
+}) => {
+  // const [output, setOutput] = useState("");
 
   const runCode = async () => {
     const sourceCode = editorRef.current.getValue();
     if (!sourceCode) return;
 
     try {
-      const run = await ExecuteCode("javascript", sourceCode);
+      const run = await ExecuteCode(programmingLanguage, sourceCode);
 
       setOutput(run.run.output);
+      setIsCodeRunning(true);
     } catch (error) {
       console.log("(CLIENT) Error Running Code", error);
     }
@@ -21,12 +28,17 @@ const Output = ({ editorRef }) => {
 
   return (
     <>
-      <Button
-        onClick={() => runCode()}
-        className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-2.5 py-1.4 text-center me-2 mb-5"
-      >
-        Jalankan Kode
-      </Button>
+      <div className="flex">
+        <Button
+          onClick={() => runCode()}
+          className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-2.5 py-1.4 text-center me-2 mb-5"
+        >
+          Jalankan Kode
+        </Button>
+        <Button className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-2.5 py-1.4 text-center me-2 mb-5">
+          Kanjuds
+        </Button>
+      </div>
       <Box
         height={"60vh"}
         p={2}

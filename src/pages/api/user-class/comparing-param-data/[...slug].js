@@ -39,14 +39,17 @@ export default async function handler(req, res) {
       },
     });
 
+    console.log("isi email", checkUserEmailById);
+
     const checkUserEmailFromServerSession = await prisma.user.findFirst({
       where: {
         email: userIdFromSession,
       },
     });
 
-    if (checkUserEmailById.id !== checkUserEmailFromServerSession.id)
+    if (checkUserEmailById.id !== checkUserEmailFromServerSession.id) {
       throw new Error("User Did Not Have Permission");
+    }
 
     const checkIsTakenClass = await prisma.user_class.findUnique({
       where: { id: userClassId },

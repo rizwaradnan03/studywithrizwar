@@ -35,11 +35,15 @@ const MyClass = () => {
       selectedClassType
         ? FindAllClassByType({ class_type: selectedClassType })
         : FindAllClass(),
-    { enabled: !!selectedClassType || selectedClassType == "" }
+    { enabled: !!selectedClassType || selectedClassType === "" }
   );
 
-  const amountOfTakenClass = dataTakenClass?.data.length || 0;
-  const amountOfClass = dataClass?.data.length;
+  const amountOfTakenClass = Array.isArray(dataTakenClass?.data)
+    ? dataTakenClass.data.length
+    : 0;
+  const amountOfClass = Array.isArray(dataClass?.data)
+    ? dataClass.data.length
+    : 0;
 
   const handleRadioChange = (id) => {
     setSelectedClassType(id);
@@ -63,14 +67,17 @@ const MyClass = () => {
 
   if (errorClass) {
     toast.error("Gagal Mengambil Data Kelas!");
+    return null;
   }
 
   if (errorClassType) {
     toast.error("Gagal Mengambil Data Tipe Kelas!");
+    return null;
   }
 
   if (errorTakenClass) {
     toast.error("Gagal Mengambil Data Kelas Yang Telah Diambil!");
+    return null;
   }
 
   return (
@@ -95,33 +102,34 @@ const MyClass = () => {
                 className="flex overflow-x-auto space-x-4 scrollbar-hide"
                 style={{ scrollBehavior: "smooth" }}
               >
-                {dataTakenClass?.data.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex-none w-64 bg-white shadow dark:bg-gray-800 dark:border-gray-700"
-                  >
-                    <div className="flex flex-col items-center pb-10">
-                      <Image
-                        width={120}
-                        height={120}
-                        className="mb-3 rounded-full shadow-lg"
-                        src={item.classs.image_logo}
-                        alt={item.classs.name}
-                      />
-                      <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-                        {item.classs.name}
-                      </h5>
-                      <div className="flex mt-4 md:mt-6">
-                        <button
-                          type="button"
-                          className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        >
-                          Belajar
-                        </button>
+                {Array.isArray(dataTakenClass?.data) &&
+                  dataTakenClass.data.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex-none w-64 bg-white shadow dark:bg-gray-800 dark:border-gray-700"
+                    >
+                      <div className="flex flex-col items-center pb-10">
+                        <Image
+                          width={120}
+                          height={120}
+                          className="mb-3 rounded-full shadow-lg"
+                          src={item.classs.image_logo}
+                          alt={item.classs.name}
+                        />
+                        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                          {item.classs.name}
+                        </h5>
+                        <div className="flex mt-4 md:mt-6">
+                          <button
+                            type="button"
+                            className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          >
+                            Belajar
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
               <button
                 onClick={scrollRight}
@@ -145,31 +153,32 @@ const MyClass = () => {
               {" "}
               {/* Set a fixed height with scrolling */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 p-6.5">
-                {dataClass?.data.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col items-center bg-white shadow dark:bg-gray-800 dark:border-gray-700 p-4 rounded-lg"
-                  >
-                    <Image
-                      width={120}
-                      height={120}
-                      className="mb-3 rounded-full shadow-lg"
-                      src={item.image_logo}
-                      alt={item.name}
-                    />
-                    <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-                      {item.name}
-                    </h5>
-                    <div className="flex mt-4">
-                      <Link
-                        href={`/class/detail/${item.id}`}
-                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-custom-accent bg-custom-primary rounded-lg hover:bg-custom-secondary focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                      >
-                        Detail Kelas
-                      </Link>
+                {Array.isArray(dataClass?.data) &&
+                  dataClass.data.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col items-center bg-white shadow dark:bg-gray-800 dark:border-gray-700 p-4 rounded-lg"
+                    >
+                      <Image
+                        width={120}
+                        height={120}
+                        className="mb-3 rounded-full shadow-lg"
+                        src={item.image_logo}
+                        alt={item.name}
+                      />
+                      <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                        {item.name}
+                      </h5>
+                      <div className="flex mt-4">
+                        <Link
+                          href={`/class/detail/${item.id}`}
+                          className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-custom-accent bg-custom-primary rounded-lg hover:bg-custom-secondary focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                          Detail Kelas
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           </div>
@@ -199,25 +208,26 @@ const MyClass = () => {
                 Semua
               </label>
             </div>
-            {dataClassType?.data.map((item) => (
-              <div key={item.id} className="flex items-center mb-2">
-                <input
-                  type="radio"
-                  id={`classType-${item.id}`}
-                  name="classType"
-                  value={item.id}
-                  checked={selectedClassType === item.id}
-                  onChange={() => handleRadioChange(item.id)}
-                  className="form-radio h-4 w-4 text-primary accent-primary focus:ring-0"
-                />
-                <label
-                  htmlFor={`classType-${item.id}`}
-                  className="ml-2 text-black dark:text-white cursor-pointer"
-                >
-                  {item.name}
-                </label>
-              </div>
-            ))}
+            {Array.isArray(dataClassType?.data) &&
+              dataClassType.data.map((item) => (
+                <div key={item.id} className="flex items-center mb-2">
+                  <input
+                    type="radio"
+                    id={`classType-${item.id}`}
+                    name="classType"
+                    value={item.id}
+                    checked={selectedClassType === item.id}
+                    onChange={() => handleRadioChange(item.id)}
+                    className="form-radio h-4 w-4 text-primary accent-primary focus:ring-0"
+                  />
+                  <label
+                    htmlFor={`classType-${item.id}`}
+                    className="ml-2 text-black dark:text-white cursor-pointer"
+                  >
+                    {item.name}
+                  </label>
+                </div>
+              ))}
           </div>
         </div>
       </div>

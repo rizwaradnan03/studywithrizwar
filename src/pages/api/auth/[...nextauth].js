@@ -20,7 +20,7 @@ export const authOptions = {
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET
+      clientSecret: process.env.GITHUB_SECRET,
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -87,6 +87,34 @@ export const authOptions = {
               email: token.email,
               name: token.name,
               login_type: "Google",
+              role_id: "2",
+            },
+            include: { role: true },
+          });
+        }
+
+        const roleAccessPath = await prisma.role_access_path.findMany({
+          where: { role_id: "2" },
+        });
+
+        token.id = userFromDB.id;
+        token.name = userFromDB.name;
+        token.role = userFromDB.role.name;
+        token.role_access_paths = roleAccessPath;
+      }
+
+      if (account?.provider === "github") {
+        let userFromDB = await prisma.user.findUnique({
+          where: { email: token.email },
+          include: { role: true },
+        });
+
+        if (!userFromDB) {
+          userFromDB = await prisma.user.create({
+            data: {
+              email: token.email,
+              name: token.name,
+              login_type: "GitHub",
               role_id: "2",
             },
             include: { role: true },

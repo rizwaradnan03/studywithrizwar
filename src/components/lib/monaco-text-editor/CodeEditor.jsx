@@ -2,7 +2,13 @@ import { Editor } from "@monaco-editor/react";
 import React, { useRef, useState } from "react";
 import Output from "./Output";
 
-const CodeEditor = ({ theme, programmingLanguage }) => {
+const CodeEditor = ({
+  theme,
+  programmingLanguage,
+  output,
+  setOutput,
+  setIsCodeRunning,
+}) => {
   const editorRef = useRef(null);
   const [value, setValue] = useState("");
 
@@ -16,9 +22,9 @@ const CodeEditor = ({ theme, programmingLanguage }) => {
       <div className="w-full lg:w-2/4">
         <Editor
           height="65vh"
-          defaultLanguage="javascript"
+          defaultLanguage={programmingLanguage}
           language={programmingLanguage}
-          defaultValue="// type your code here"
+          defaultValue=""
           theme="vs-dark"
           onMount={onMount}
           value={value}
@@ -26,7 +32,13 @@ const CodeEditor = ({ theme, programmingLanguage }) => {
         />
       </div>
       <div className="w-full lg:w-1/4">
-        <Output editorRef={editorRef} />
+        <Output
+          programmingLanguage={programmingLanguage}
+          editorRef={editorRef}
+          output={output}
+          setOutput={setOutput}
+          setIsCodeRunning={setIsCodeRunning}
+        />
       </div>
     </>
   );
