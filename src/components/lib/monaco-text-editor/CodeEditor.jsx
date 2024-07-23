@@ -7,7 +7,7 @@ const CodeEditor = ({
   programmingLanguage,
   output,
   setOutput,
-  setIsCodeRunning,
+  setIsCodeSubmitted,
 }) => {
   const editorRef = useRef(null);
   const [value, setValue] = useState("");
@@ -37,7 +37,7 @@ const CodeEditor = ({
           editorRef={editorRef}
           output={output}
           setOutput={setOutput}
-          setIsCodeRunning={setIsCodeRunning}
+          setIsCodeSubmitted={setIsCodeSubmitted}
         />
       </div>
     </>

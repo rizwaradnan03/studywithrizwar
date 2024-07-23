@@ -19,7 +19,7 @@ const Course = () => {
   const order = slug ? slug[2] : null;
 
   const [output, setOutput] = useState("");
-  const [isCodeRunning, setIsCodeRunning] = useState(false);
+  const [isCodeSubmitted, setIsCodeSubmitted] = useState(false);
 
   const {
     isLoading: isLoadingComparingParamData,
@@ -47,7 +47,7 @@ const Course = () => {
   );
 
   useEffect(() => {
-    if (isCodeRunning && dataComparingParamData) {
+    if (isCodeSubmitted && dataComparingParamData) {
       let modifiedOutput = output.replace("\n", "");
       if (
         modifiedOutput === dataComparingParamData.data.class_exercise.result
@@ -56,9 +56,9 @@ const Course = () => {
       } else {
         toast.error("Jawaban Anda Salah!");
       }
-      setIsCodeRunning(false);
+      setIsCodeSubmitted(false);
     }
-  }, [isCodeRunning, dataComparingParamData, output]);
+  }, [isCodeSubmitted, dataComparingParamData, output]);
 
   if (isErrorComparingParamData) {
     toast.error(errorComparingParamData.message);
@@ -71,6 +71,13 @@ const Course = () => {
     <>
       <div className="flex flex-col lg:flex-row mb-10 gap-10 shadow-3 px-4 py-5">
         <div className="w-full lg:w-1/4">
+          <h2 className="font-bold text-2xl text-center">
+            {dataComparingParamData?.data.programming_language
+              .charAt(0)
+              .toUpperCase() +
+              dataComparingParamData?.data.programming_language.slice(1)}
+          </h2>
+          <hr className="my-3" />
           <div
             dangerouslySetInnerHTML={{
               __html:
@@ -85,7 +92,7 @@ const Course = () => {
           }
           output={output}
           setOutput={setOutput}
-          setIsCodeRunning={setIsCodeRunning}
+          setIsCodeSubmitted={setIsCodeSubmitted}
         />
       </div>
     </>

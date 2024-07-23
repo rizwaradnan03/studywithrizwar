@@ -19,7 +19,7 @@ export default function withAuth(middleware) {
     const userRolePaths = token.role_access_paths;
 
     // Helper function to check if the path matches any pattern
-    const hasAccess = userRolePaths.some((route) => {
+const hasAccess = userRolePaths.some((route) => {
       const routePath = route.path;
       
       // Handle dynamic segments with regex

@@ -80,6 +80,8 @@ const MyClass = () => {
     return null;
   }
 
+  console.log("isi data taken class", dataTakenClass.data);
+
   return (
     <>
       <div className="flex flex-col lg:flex-row mb-10">
@@ -120,12 +122,12 @@ const MyClass = () => {
                           {item.classs.name}
                         </h5>
                         <div className="flex mt-4 md:mt-6">
-                          <button
-                            type="button"
-                            className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          <Link
+                            href={`/class/course/${item.id}/${item.classs.programming_language}/1`}
+                            className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                           >
-                            Belajar
-                          </button>
+                            Mulai Belajar!
+                          </Link>
                         </div>
                       </div>
                     </div>

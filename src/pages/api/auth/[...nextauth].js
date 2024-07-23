@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 export const authOptions = {
   session: {
     strategy: "jwt",
-    maxAge: 4 * 60 * 60,
+    maxAge: 1 * 60 * 60,
   },
   secret: process.env.SECRET_KEY,
   providers: [

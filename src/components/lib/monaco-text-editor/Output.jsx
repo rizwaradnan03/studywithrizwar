@@ -8,7 +8,7 @@ const Output = ({
   editorRef,
   output,
   setOutput,
-  setIsCodeRunning,
+  setIsCodeSubmitted,
 }) => {
   // const [output, setOutput] = useState("");
 
@@ -20,7 +20,7 @@ const Output = ({
       const run = await ExecuteCode(programmingLanguage, sourceCode);
 
       setOutput(run.run.output);
-      setIsCodeRunning(true);
+      // setIsCodeRunning(true);
     } catch (error) {
       console.log("(CLIENT) Error Running Code", error);
     }
@@ -35,9 +35,14 @@ const Output = ({
         >
           Jalankan Kode
         </Button>
-        <Button className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-2.5 py-1.4 text-center me-2 mb-5">
-          Kanjuds
-        </Button>
+        {output ? (
+          <Button
+            onClick={() => setIsCodeSubmitted(true)}
+            className="text-white bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-2.5 py-1.4 text-center me-2 mb-5"
+          >
+            Submit
+          </Button>
+        ) : null}
       </div>
       <Box
         height={"60vh"}
