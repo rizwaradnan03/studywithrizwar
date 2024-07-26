@@ -174,7 +174,7 @@ const MyClass = () => {
                       <div className="flex mt-4">
                         <Link
                           href={`/class/detail/${item.id}`}
-                          className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-custom-accent bg-custom-primary rounded-lg hover:bg-custom-secondary focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-custom-accent hover:text-custom-primary bg-custom-primary rounded-lg hover:bg-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                           Detail Kelas
                         </Link>

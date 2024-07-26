@@ -69,7 +69,7 @@ const Course = () => {
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row mb-10 gap-10 shadow-3 px-4 py-5">
+      <div className="flex flex-col lg:flex-row mb-5 gap-10 shadow-3 px-4 py-5">
         <div className="w-full lg:w-1/4">
           <h2 className="font-bold text-2xl text-center">
             {dataComparingParamData?.data.programming_language
@@ -94,6 +94,10 @@ const Course = () => {
           setOutput={setOutput}
           setIsCodeSubmitted={setIsCodeSubmitted}
         />
+      </div>
+      <div className="flex justify-between mb-10 shadow-3 px-4 py-5">
+        <button>kembali</button>
+        <button>lanjut</button>
       </div>
     </>
   );
