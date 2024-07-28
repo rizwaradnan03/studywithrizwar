@@ -1,7 +1,9 @@
+import { SubmittedCodingResult } from "@/api/user-class-exercise/SubmittedCodingResult";
 import { ComparingParamDataUserClass } from "@/api/user-class/ComparingParamDataUserClass";
 import CodeEditor from "@/components/lib/monaco-text-editor/CodeEditor";
 import IsLoading from "@/components/lib/react-query/IsLoading";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
@@ -18,8 +20,11 @@ const Course = () => {
   const programmingLanguage = slug ? slug[1] : null;
   const order = slug ? slug[2] : null;
 
+  const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
   const [isCodeSubmitted, setIsCodeSubmitted] = useState(false);
+
+  console.log("isi setcode", code);
 
   const {
     isLoading: isLoadingComparingParamData,
@@ -46,13 +51,38 @@ const Course = () => {
       )
   );
 
+  console.log("isi comparing data", dataComparingParamData);
+
   useEffect(() => {
     if (isCodeSubmitted && dataComparingParamData) {
+      if (!code) {
+        toast.error("Masukkan Kode Anda Terlebih Dahulu!");
+      }
+
+      for (
+        let i = 0;
+        i < dataComparingParamData.data.class_exercise.term.term.length;
+        i++
+      ) {
+        if (
+          !code.includes(
+            dataComparingParamData.data.class_exercise.term.term[i]
+          )
+        ) {
+          toast.error("Kamu Tidak Mengikuti Aturan Syarat Kodingan Nya!");
+          setIsCodeSubmitted(false);
+        }
+      }
+
       let modifiedOutput = output.replace("\n", "");
       if (
         modifiedOutput === dataComparingParamData.data.class_exercise.result
       ) {
         toast.success("Jawaban Anda Benar!");
+        SubmittedCodingResult({
+          classExerciseId: dataComparingParamData.data.class_exercise_id,
+          result: modifiedOutput,
+        });
       } else {
         toast.error("Jawaban Anda Salah!");
       }
@@ -90,14 +120,36 @@ const Course = () => {
           programmingLanguage={
             dataComparingParamData?.data.programming_language
           }
+          code={code}
+          setCode={setCode}
           output={output}
           setOutput={setOutput}
+          isCodeSubmitted={isCodeSubmitted}
           setIsCodeSubmitted={setIsCodeSubmitted}
         />
       </div>
       <div className="flex justify-between mb-10 shadow-3 px-4 py-5">
-        <button>kembali</button>
-        <button>lanjut</button>
+        {order - 1 != 0 ? (
+          <Link
+            href={`/class/course/${userClassId}/${programmingLanguage}/${parseInt(
+              order - 1
+            )}`}
+          >
+            Soal Sebelum
+          </Link>
+        ) : (
+          <Link href={'/class/classlist'}>List Kelas</Link>
+        )}
+        {order != dataComparingParamData.data.total_page ? (
+
+        <Link
+          href={`/class/course/${userClassId}/${programmingLanguage}/${
+            parseInt(order) + 1
+          }`}
+        >
+          Soal Berikutnya
+        </Link>
+        ) : 'soal habis'}
       </div>
     </>
   );

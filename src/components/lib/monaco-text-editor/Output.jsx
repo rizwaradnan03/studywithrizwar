@@ -1,17 +1,16 @@
 import { ExecuteCode } from "@/api/code-editor/ExecuteCode";
 import { Box } from "@chakra-ui/react";
 import { Button } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Output = ({
   programmingLanguage,
   editorRef,
   output,
   setOutput,
+  isCodeSubmitted,
   setIsCodeSubmitted,
 }) => {
-  // const [output, setOutput] = useState("");
-
   const runCode = async () => {
     const sourceCode = editorRef.current.getValue();
     if (!sourceCode) return;

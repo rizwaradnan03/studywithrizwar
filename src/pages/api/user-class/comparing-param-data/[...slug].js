@@ -39,8 +39,6 @@ export default async function handler(req, res) {
       },
     });
 
-    console.log("isi email", checkUserEmailById);
-
     const checkUserEmailFromServerSession = await prisma.user.findFirst({
       where: {
         email: userIdFromSession,
@@ -70,6 +68,12 @@ export default async function handler(req, res) {
       throw new Error("Class Exercise Did Not Match");
     }
 
+    const totalPage = await prisma.class_exercise.count({
+      where: {
+        classs_id: checkIsTakenClass.classs_id,
+      },
+    });
+
     const checkCurrentPage = await prisma.user_class_exercise.findFirst({
       where: {
         user_id: checkIsTakenClass.user_id,
@@ -85,6 +89,7 @@ export default async function handler(req, res) {
     const data = {
       ...checkCurrentPage,
       class_exercise: matchClassExerciseByClassId,
+      total_page: totalPage,
     };
 
     res.status(201).json(customResponse({ data: data, type: "find" }));

@@ -5,12 +5,16 @@ import Output from "./Output";
 const CodeEditor = ({
   theme,
   programmingLanguage,
+  code,
+  setCode,
   output,
   setOutput,
+  isCodeSubmitted,
   setIsCodeSubmitted,
 }) => {
   const editorRef = useRef(null);
-  const [value, setValue] = useState("");
+  // const [value, setValue] = useState("");
+  // console.log('isi editor ref', editorRef)
 
   const onMount = (editor) => {
     editorRef.current = editor;
@@ -27,8 +31,8 @@ const CodeEditor = ({
           defaultValue=""
           theme="vs-dark"
           onMount={onMount}
-          value={value}
-          onChange={(value) => setValue(value)}
+          value={code}
+          onChange={(code) => setCode(code)}
         />
       </div>
       <div className="w-full lg:w-1/4">
@@ -37,6 +41,7 @@ const CodeEditor = ({
           editorRef={editorRef}
           output={output}
           setOutput={setOutput}
+          isCodeSubmitted={isCodeSubmitted}
           setIsCodeSubmitted={setIsCodeSubmitted}
         />
       </div>
