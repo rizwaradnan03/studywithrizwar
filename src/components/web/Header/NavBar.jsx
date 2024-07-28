@@ -6,11 +6,22 @@ import DropdownUser from "./DropdownUser";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { COMPANY_NAME } from "@/config";
+import { MidtransPayment } from "@/api/payment-gateway/PaymentGateway";
 
 const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
   const { data } = useSession();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleDonation = async () => {
+    console.log('wasngaf')
+    try {
+      const payment = await MidtransPayment();
+      window.snap.pay(payment.token);
+    } catch (error) {
+      console.error("(CLIENT) Error Payment:", error);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 flex w-full bg-custom-background drop-shadow-lg dark:bg-boxdark dark:drop-shadow-none">
@@ -67,15 +78,21 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
         </div>
 
         <div className="hidden sm:flex items-center gap-8 justify-center w-full">
-          <Link href="/class/classlist" className="text-custom-text dark:text-white">
+          <Link
+            href="/class/classlist"
+            className="text-custom-text dark:text-white"
+          >
             Kelas Saya
           </Link>
           <Link href="/dashboard" className="text-custom-text dark:text-white">
             Dashboard
           </Link>
-          <Link href="/dashboard" className="text-custom-text dark:text-white">
-            Ambil Kelas
-          </Link>
+          <button
+            onClick={() => handleDonation()}
+            className="text-custom-text dark:text-white"
+          >
+            Donasi Ke Rizwar
+          </button>
           {/* <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
