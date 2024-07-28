@@ -24,8 +24,6 @@ const Course = () => {
   const [output, setOutput] = useState("");
   const [isCodeSubmitted, setIsCodeSubmitted] = useState(false);
 
-  console.log("isi setcode", code);
-
   const {
     isLoading: isLoadingComparingParamData,
     isError: isErrorComparingParamData,
@@ -52,6 +50,11 @@ const Course = () => {
   );
 
   console.log("isi comparing data", dataComparingParamData);
+
+  useEffect(() => {
+    setCode("")
+    setOutput("")
+  }, [slug])
 
   useEffect(() => {
     if (isCodeSubmitted && dataComparingParamData) {
