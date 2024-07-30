@@ -33,7 +33,6 @@ export default async function handler(req, res) {
 
   try {
     const { class_id } = req.body;
-    console.log("isi class id", class_id);
     if (!class_id) {
       return res.status(405).json({ message: "Payload Not Found" });
     }

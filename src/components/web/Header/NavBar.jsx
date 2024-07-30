@@ -14,7 +14,6 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleDonation = async () => {
-    console.log('wasngaf')
     try {
       const payment = await MidtransPayment();
       window.snap.pay(payment.token);
@@ -142,18 +141,30 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
       {menuOpen && (
         <div className="w-full bg-white dark:bg-boxdark lg:hidden">
           <Link
+            href="/class/classlist"
+            className="block px-4 py-2 text-custom-text dark:text-white"
+          >
+            Kelas Saya
+          </Link>
+          <Link
             href="/dashboard"
             className="block px-4 py-2 text-custom-text dark:text-white"
           >
             Dashboard
           </Link>
-          <Link
-            href="/about"
+          {/* <Link
+            href="/dashboard"
             className="block px-4 py-2 text-custom-text dark:text-white"
           >
-            About
-          </Link>
-          <div className="relative">
+            Dashboard
+          </Link> */}
+          <button
+            onClick={() => handleDonation()}
+            className="block px-4 py-2 text-custom-text dark:text-white"
+          >
+            Donasi Ke Rizwar
+          </button>
+          {/* <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="block px-4 py-2 text-custom-text dark:text-white w-full text-left"
@@ -176,7 +187,7 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
                 </Link>
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       )}
     </header>

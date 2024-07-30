@@ -49,8 +49,6 @@ const Course = () => {
       )
   );
 
-  console.log("isi comparing data", dataComparingParamData);
-
   useEffect(() => {
     setCode("")
     setOutput("")

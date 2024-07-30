@@ -80,8 +80,6 @@ const MyClass = () => {
     return null;
   }
 
-  console.log("isi data taken class", dataTakenClass.data);
-
   return (
     <>
       <div className="flex flex-col lg:flex-row mb-10">

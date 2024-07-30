@@ -3,7 +3,6 @@ import React from "react";
 
 const Profile = () => {
   const { data } = useSession();
-    console.log('isi data')
 
   return (
     <>

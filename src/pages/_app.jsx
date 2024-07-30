@@ -7,6 +7,7 @@ import { exceptionRoutes } from "@/routes/exceptionRoutes";
 import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Toaster } from "react-hot-toast";
+import { Helmet } from "react-helmet";
 
 export default function App({
   Component,
@@ -36,6 +37,17 @@ export default function App({
 
   return (
     <>
+      <Helmet>
+        <meta
+          name="description"
+          content="Study With Rizwar menyediakan kelas belajar pemrograman secara gratis"
+        />
+
+        <meta
+          name="keywords"
+          content="Study With Rizwar, Online Class Programming, Programming Language, Javascript, Python"
+        />
+      </Helmet>
       <Toaster position="top-center" reverseOrder={false} />
       <QueryClientProvider client={queryClient}>
         {isRootPath ? (

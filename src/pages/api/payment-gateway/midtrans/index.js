@@ -31,9 +31,6 @@ export default async function handler(req, res) {
     };
 
     const token = await snap.createTransactionToken(parameter);
-
-    console.log('hasil token', token)
-
     res.status(200).json({ token });
   } catch (error) {
     console.log("(API) Error Payment Midtrans", error);
